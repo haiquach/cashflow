@@ -1,0 +1,26 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<form:form method="POST" modelAttribute="fileBucket" action="<c:url value='/admin/process?${_csrf.parameterName}=${_csrf.token}'/>"
+           enctype="multipart/form-data" class="form-inline">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <form:input type="file" path="file" class="file-loading"/>
+            <div id="errorBlock" class="help-block">
+                <form:errors path="file" class="help-inline"/>
+            </div>
+        </div>
+    </div>
+</form:form>
+<script>
+    $( document ).ready(function() {
+        $("#file").fileinput({
+            showPreview: false,
+            showCaption: false,
+            browseClass: "btn btn-primary",
+            allowedFileExtensions: ["xls"],
+            elErrorContainer: "#errorBlock"
+        });
+
+    });
+</script>
+

@@ -1,0 +1,45 @@
+{
+  "income" : [
+    "Gross Sales",
+    "Gain (Loss) on Sale of Assets",
+    "Interest Income",
+    "Sales Returns and Allowances"
+  ],
+  "expense" : [
+    "Advertising",
+    "Amortization",
+    "Bad Debts",
+    "Bank Charges",
+    "Charitable Contributions",
+    "Commissions",
+    "Contract Labor",
+    "Credit Card Fees",
+    "Delivery Expenses",
+    "Depreciation",
+    "Dues and Subscriptions",
+    "Insurance",
+    "Interest",
+    "Maintenance",
+    "Miscellaneous",
+    "Office Expenses",
+    "Operating Supplies",
+    "Payroll Taxes",
+    "Permits and Licenses",
+    "Postage",
+    "Professional Fees",
+    "Property Taxes",
+    "Rent",
+    "Repairs",
+    "Telephone",
+    "Travel",
+    "Utilities",
+    "Vehicle Expenses",
+    "Wages"
+  ],
+  "costOfGoodsSale" : [
+    "Purchases",
+    "Freight-in",
+    "Direct Labor",
+    "Indirect Expenses"
+  ]
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <definition name="defaultTemplate" template="/WEB-INF/template/default/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/template/default/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/template/default/menu.jsp"/>
+        <put-attribute name="headerTitle" value="Template" />
+    </definition>
+
+    <definition name="userslist" extends="defaultTemplate">
+        <put-attribute name="title" value="Users Management" />
+        <put-attribute name="body" value="/WEB-INF/pages/admin/list.jsp" />
+        <put-attribute name="headerTitle" value="Users Management" />
+    </definition>
+
+    <definition name="registration" extends="defaultTemplate">
+        <put-attribute name="title" value="User Modification" />
+        <put-attribute name="body" value="/WEB-INF/pages/admin/register.jsp" />
+        <put-attribute name="headerTitle" value="User Details" />
+    </definition>
+
+    <definition name="reset" extends="defaultTemplate">
+        <put-attribute name="title" value="Reset Password" />
+        <put-attribute name="body" value="/WEB-INF/pages/auth/reset.jsp" />
+        <put-attribute name="headerTitle" value="Please enter your new password!" />
+    </definition>
+
+    <definition name="profile" extends="defaultTemplate">
+        <put-attribute name="title" value="User Profile" />
+        <put-attribute name="body" value="/WEB-INF/pages/auth/profile.jsp" />
+        <put-attribute name="headerTitle" value="User Profile" />
+    </definition>
+
+    <definition name="houseHold" extends="defaultTemplate">
+        <put-attribute name="title" value="House Hold settings" />
+        <put-attribute name="body" value="/WEB-INF/pages/admin/houseHold.jsp" />
+        <put-attribute name="headerTitle" value="House Hold settings" />
+    </definition>
+
+    <definition name="import" extends="defaultTemplate">
+        <put-attribute name="title" value="Import Cash Flow Items" />
+        <put-attribute name="body" value="/WEB-INF/pages/admin/import.jsp" />
+        <put-attribute name="headerTitle" value="Import Cash Flow Items" />
+    </definition>
+
+    <definition name="export" extends="defaultTemplate">
+        <put-attribute name="title" value="Import Cash Flow Items" />
+        <put-attribute name="body" value="/WEB-INF/pages/admin/export.jsp" />
+        <put-attribute name="headerTitle" value="Export Cash Flow Items" />
+    </definition>
+
+</tiles-definitions>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <definition name="defaultTemplate" template="/WEB-INF/template/default/template.jsp">
+        <put-attribute name="header" value="/WEB-INF/template/default/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/template/default/menu.jsp"/>
+        <put-attribute name="headerTitle" value="Template" />
+    </definition>
+
+    <definition name="dashboard" extends="defaultTemplate">
+        <put-attribute name="title" value="Financial Dashboard" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/dashboard.jsp" />
+        <put-attribute name="headerTitle" value="Dashboard" />
+    </definition>
+
+    <definition name="incomes" extends="defaultTemplate">
+        <put-attribute name="title" value="Financial Income" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/income.jsp" />
+        <put-attribute name="headerTitle" value="Income Management" />
+    </definition>
+
+    <definition name="expenses" extends="defaultTemplate">
+        <put-attribute name="title" value="Financial Expense" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/expense.jsp" />
+        <put-attribute name="headerTitle" value="Expense Management" />
+    </definition>
+
+    <definition name="settings" extends="defaultTemplate">
+        <put-attribute name="title" value="User Settings" />
+        <put-attribute name="body" value="/WEB-INF/pages/auth/settings.jsp" />
+        <put-attribute name="headerTitle" value="User settings" />
+    </definition>
+
+    <definition name="category" extends="defaultTemplate">
+        <put-attribute name="title" value="Category Settings" />
+        <put-attribute name="body" value="/WEB-INF/pages/houseHold/categories.jsp" />
+        <put-attribute name="headerTitle" value="Category settings" />
+    </definition>
+
+    <definition name="revenue" extends="defaultTemplate">
+        <put-attribute name="title" value="Financial Income" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/revenue.jsp" />
+        <put-attribute name="headerTitle" value="Revenue Details" />
+    </definition>
+
+    <definition name="report" extends="defaultTemplate">
+        <put-attribute name="title" value="Financial Income" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/report.jsp" />
+        <put-attribute name="headerTitle" value="Search" />
+    </definition>
+
+    <definition name="item" extends="defaultTemplate">
+        <put-attribute name="title" value="Financial Cash Flow Item" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/item.jsp" />
+        <put-attribute name="headerTitle" value="Financial Cash Flow Item" />
+    </definition>
+
+    <definition name="dropbox" extends="defaultTemplate">
+        <put-attribute name="title" value="Dropbox" />
+        <put-attribute name="body" value="/WEB-INF/pages/houseHold/dropbox.jsp" />
+        <put-attribute name="headerTitle" value="Dropbox" />
+    </definition>
+
+</tiles-definitions>
