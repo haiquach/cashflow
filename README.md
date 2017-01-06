@@ -12,3 +12,4 @@
     <password>admin</password>
 </server>
 
+# MongoDB is used for data store
