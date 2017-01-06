@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class FinanceRepository {
         }
     }
 
-    private Collection<CashFlowItem> getItems(String type, Collection<String> members, Date startDate, Date endDate) {
+    private Collection<CashFlowItem> getItems(String type, Collection<String> members, LocalDate startDate, LocalDate endDate) {
         Query query = Query.query(
                 Criteria.where("userId").in(members)
                         .and("type").is(type)
@@ -78,18 +79,18 @@ public class FinanceRepository {
         return mongoTemplate.find(query, CashFlowItem.class);
     }
 
-    public Collection<CashFlowItem> getIncomes(Collection<String> members, Date startDate, Date endDate) {
+    public Collection<CashFlowItem> getIncomes(Collection<String> members, LocalDate startDate, LocalDate endDate) {
         return getItems(CashFlowConstant.INCOME, members, startDate, endDate);
     }
 
-    public Collection<CashFlowItem> getExpense(Collection<String> members, Date startDate, Date endDate) {
+    public Collection<CashFlowItem> getExpense(Collection<String> members, LocalDate startDate, LocalDate endDate) {
         return getItems(CashFlowConstant.EXPENSE, members, startDate, endDate);
     }
 
     public Collection<CashSum> getTotalIncomes(Collection<String> users) {
 
         Criteria criteria = Criteria.where("userId").in(users)
-                .and("effective").gte(DateUtils.getBeginThisYear()).lt(DateUtils.getBeginNextYear());
+                .and("effective").gte(DateUtils.beginningThisYear()).lt(DateUtils.beginningNextYear());
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criteria),
@@ -110,7 +111,7 @@ public class FinanceRepository {
     public Collection<CashSum> getRevenueDetails(Collection<String> users) {
 
         Criteria criteria = Criteria.where("userId").in(users)
-                .and("effective").gte(DateUtils.getBeginThisYear()).lt(DateUtils.getBeginNextYear());
+                .and("effective").gte(DateUtils.beginningThisYear()).lt(DateUtils.beginningNextYear());
 
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criteria),
@@ -123,7 +124,7 @@ public class FinanceRepository {
     }
 
     public Collection<CashSum> getCashFlowByMonthly(Collection<String> users) {
-        Criteria criteria = Criteria.where("userId").in(users).and("effective").gte(DateUtils.getBeginThisYear());
+        Criteria criteria = Criteria.where("userId").in(users).and("effective").gte(DateUtils.beginningThisYear());
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(criteria),
                 Aggregation.project("type", "amount")
@@ -137,7 +138,7 @@ public class FinanceRepository {
 
     public Collection<CategoriesSummary> getCashFlowByCategory(Collection<String> users, String type) {
         Criteria criteria = Criteria.where("userId").in(users)
-                .and("effective").gte(DateUtils.getBeginThisYear())
+                .and("effective").gte(DateUtils.beginningThisYear())
                 .and("type").is(type);
 
         Aggregation aggregation = Aggregation.newAggregation(

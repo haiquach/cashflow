@@ -4,6 +4,7 @@ import com.hquach.Utils.DateUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -14,7 +15,13 @@ public class EffectiveDateValidator implements ConstraintValidator<EffectiveDate
 
     @Override
     public boolean isValid(Date value, ConstraintValidatorContext context) {
-        if (value.before(DateUtils.getBeginThisYear()) || value.after(DateUtils.getBeginNextYear())) {
+        if (value == null) {
+            return false;
+        }
+        LocalDate date = DateUtils.asLocalDate(value);
+        if (date.isBefore(DateUtils.beginningThisYear()) ||
+                date.isEqual(DateUtils.beginningNextYear()) ||
+                date.isAfter(DateUtils.beginningNextYear())) {
             return false;
         }
         return true;

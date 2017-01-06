@@ -48,7 +48,7 @@ public class FinancialServices {
 
     public Collection<CashFlowItem> getIncomes() {
         return financeRepository.getIncomes(getMembers(),
-                DateUtils.getBeginThisYear(), DateUtils.getBeginNextYear());
+                DateUtils.beginningThisYear(), DateUtils.beginningNextYear());
     }
 
     public Collection<CashFlowItem> search(Date startDate, Date endDate,
@@ -58,7 +58,7 @@ public class FinancialServices {
 
     public Collection<CashFlowItem> getExpenses() {
         return financeRepository.getExpense(getMembers(),
-                DateUtils.getBeginThisYear(), DateUtils.getBeginNextYear());
+                DateUtils.beginningThisYear(), DateUtils.beginningNextYear());
     }
 
     public Collection<CashSum> getTotalIncomes() {
