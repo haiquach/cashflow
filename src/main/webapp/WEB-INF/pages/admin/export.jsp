@@ -1,9 +1,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<s:url value="/admin/download" var="download"/>
 
 <div class="panel panel-info">
     <div class="panel-body">
-        <form:form modelAttribute="form" method="post" action="<c:url value='/admin/download'/>" class="form-inline">
+        <form:form modelAttribute="form" method="post" action="${download}" class="form-inline">
             <div class="row">
                 <div class="form-group">
                     <label for="startDate">Effective Date From</label>

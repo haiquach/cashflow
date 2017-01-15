@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form:form modelAttribute="dropbox" method="post" action="<c:url value='/household/dropbox'/>" class="form-horizontal">
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<s:url value='/household/dropbox' var="dropbox"/>
+<form:form modelAttribute="dropbox" method="post" action="${dropbox}" class="form-horizontal">
     <fieldset>
         <div class="form-group">
             <label for="token" class="col-sm-4 control-label">Access Token</label>
@@ -31,7 +32,7 @@
 
         <div class="form-group">
             <div class="col-lg-8 col-lg-offset-4">
-                <a href="<c:url value='/users/profile'/>" class="btn btn-default">Cancel</a>
+                <a href="<s:url value='/users/profile'/>" class="btn btn-default">Cancel</a>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
         </div>

@@ -1,9 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<s:url value="/users/update/${user.userId}" var="postUrl"/>
 <div class="col-lg-6 col-lg-offset-3">
     <div class="panel panel-info">
-        <form:form method="post" modelAttribute="user" action="<c:url value='/users/update/${user.userId}'/>" class="form-horizontal">
+        <form:form method="post" modelAttribute="user" action="${postUrl}" class="form-horizontal">
             <c:if test="${not empty message}">
                 <div class="alert alert-success">
                      ${message}

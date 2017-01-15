@@ -1,10 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<s:url value="/finance/search" var="report"/>
 <div class="panel panel-info">
     <div class="panel-body">
-        <form:form modelAttribute="report" method="post" action="<c:url value='/finance/search'/>" class="form-inline">
+        <form:form modelAttribute="report" method="post" action="${report}" class="form-inline">
             <div class="row">
                 <div class="form-group">
                     <label for="startDate">From</label>

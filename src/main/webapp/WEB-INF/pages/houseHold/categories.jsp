@@ -1,5 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<s:url value="/household/category/add" var="category"/>
+
 <c:if test="${! empty errorMessage}">
     <div class="alert alert-danger">
         ${errorMessage}
@@ -15,7 +18,7 @@
         </div>
         <div class="panel-body">
             <div id="category" class="row">
-                <form:form modelAttribute="form" method="post" action="<c:url value='/household/category/add'/>" class="form-horizontal">
+                <form:form modelAttribute="form" method="post" action="${category}" class="form-horizontal">
                     <fieldset>
                         <div class="form-group">
                             <label for="name" class="col-sm-4 control-label">Cash Flow Type</label>

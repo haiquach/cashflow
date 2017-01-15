@@ -1,6 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-<form:form method="POST" modelAttribute="fileBucket" action="<c:url value='/admin/process?${_csrf.parameterName}=${_csrf.token}'/>"
+<s:url value="/admin/process" var="import">
+    <s:param name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</s:url>
+<form:form method="POST" modelAttribute="fileBucket" action="${import}"
            enctype="multipart/form-data" class="form-inline">
     <div class="form-group">
         <div class="col-sm-12">
