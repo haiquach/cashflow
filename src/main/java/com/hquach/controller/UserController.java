@@ -1,14 +1,10 @@
 package com.hquach.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hquach.form.CategoryForm;
 import com.hquach.form.ResetForm;
-import com.hquach.model.CashFlowConstant;
+import com.hquach.model.Dropbox;
 import com.hquach.model.User;
+import com.hquach.repository.DropboxRepository;
 import com.hquach.repository.UserRepository;
-import com.hquach.services.EmailService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -34,7 +30,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private EmailService emailService;
+    private DropboxRepository dropboxRepository;
 
     @Autowired
     MessageSource messageSource;
@@ -106,5 +102,28 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("message", "Your profile has been updated successfully.");
         return "settings";
+    }
+
+    @RequestMapping(value = { "/dropbox" }, method = RequestMethod.GET)
+    public String dropbox(Model model) {
+        model.addAttribute("dropbox", dropboxRepository.getDropbox(userRepository.getLoggedUser().getDropboxToken()));
+        return "dropbox";
+    }
+
+    @RequestMapping(value = { "/dropbox" }, method = RequestMethod.POST)
+    public String saveDropbox(@Valid Dropbox dropbox, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "dropbox";
+        }
+
+        dropbox = dropboxRepository.getDropbox(dropbox.getToken());
+        if (dropbox == null) {
+            FieldError tokenError =new FieldError("dropbox", "token",
+                    "Invalid Dropbox Access Token");
+            result.addError(tokenError);
+            return "dropbox";
+        }
+        userRepository.saveDropbox(dropbox.getToken());
+        return "redirect:dropbox";
     }
 }

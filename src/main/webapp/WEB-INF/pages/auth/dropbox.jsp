@@ -1,8 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
-<s:url value='/household/dropbox' var="dropbox"/>
+<s:url value='/users/dropbox' var="dropbox"/>
 <form:form modelAttribute="dropbox" method="post" action="${dropbox}" class="form-horizontal">
     <fieldset>
+        <div class="form-group">
+            <label class="col-sm-12 control-label">Access to your Dropbox Console to generate Access Token</label>
+            <label class="col-sm-12 control-label">Dropbox Console Link: https://www.dropbox.com/developers/apps</label>
+        </div>
         <div class="form-group">
             <label for="token" class="col-sm-4 control-label">Access Token</label>
 

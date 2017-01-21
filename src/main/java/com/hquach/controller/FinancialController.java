@@ -1,14 +1,10 @@
 package com.hquach.controller;
 
 import com.dropbox.core.v2.files.FileMetadata;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hquach.form.*;
 import com.hquach.model.CashFlowConstant;
 import com.hquach.model.CashFlowItem;
-import com.hquach.model.HouseHold;
 import com.hquach.repository.DropboxRepository;
-import com.hquach.repository.HouseHoldRepository;
 import com.hquach.services.FinancialServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,8 +30,6 @@ public class FinancialController {
     @Autowired
     FinancialServices financialServices;
     @Autowired
-    HouseHoldRepository houseHoldRepository;
-    @Autowired
     DropboxRepository dropboxRepository;
 
     @RequestMapping(value = "/incomes", method = RequestMethod.GET)
@@ -49,16 +43,9 @@ public class FinancialController {
         CashFlowForm form = new CashFlowForm();
         form.setType(type.toUpperCase());
         model.addAttribute("cashFlow", form);
-        HouseHold houseHold = houseHoldRepository.getHouseHold();
-        if (houseHold != null) {
-            model.addAttribute("categories", houseHold.getCategoriesByType(type));
-            model.addAttribute("lookupData", houseHold.getCategoriesAsString(type));
-            model.addAttribute("dropbox", houseHold.getDropbox());
-        } else {
-            model.addAttribute("categories", CashFlowConstant.getCategoriesByType(type));
-            model.addAttribute("lookupData", "{}");
-            model.addAttribute("dropbox", null);
-        }
+        model.addAttribute("categories", CashFlowConstant.getCategoriesByType(type));
+        model.addAttribute("lookupData", "{}");
+        model.addAttribute("dropbox", null);
 
         return "item";
     }
@@ -145,6 +132,16 @@ public class FinancialController {
         return "report";
     }
 
+    @ModelAttribute(name = "incomeCategories")
+    private Collection<String> getIncomes() {
+        return CashFlowConstant.getIncomes();
+    }
+
+    @ModelAttribute(name = "expenseCategories")
+    private Collection<String> getExpenses() {
+        return CashFlowConstant.getExpenses();
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@Valid ReportForm report, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -157,6 +154,7 @@ public class FinancialController {
         model.addAttribute("report", report);
         return "report";
     }
+
 
     @RequestMapping(value = "/summary", method = RequestMethod.GET)
     public @ResponseBody Collection<CashFlowSummary> getSummary() {

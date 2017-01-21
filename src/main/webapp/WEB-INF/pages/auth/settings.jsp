@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <s:url value="/users/update/${user.userId}" var="postUrl"/>
 <div class="col-lg-6 col-lg-offset-3">
     <div class="panel panel-info">
@@ -51,7 +52,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-offset-4 col-xs-8">
-                        <a href="<c:url value='/users/profile'/>" class="btn btn-default"> Cancel</a>
+                        <a href="<s:url value='/users/profile'/>" class="btn btn-default"> Cancel</a>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
                     </div>
                 </div>

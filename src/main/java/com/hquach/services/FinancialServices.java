@@ -3,15 +3,11 @@ package com.hquach.services;
 import com.hquach.Utils.DateUtils;
 import com.hquach.form.CashSum;
 import com.hquach.form.CategoriesSummary;
-import com.hquach.model.CashFlowConstant;
 import com.hquach.model.CashFlowItem;
-import com.hquach.model.HouseHold;
 import com.hquach.model.User;
 import com.hquach.repository.FinanceRepository;
-import com.hquach.repository.HouseHoldRepository;
 import com.hquach.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -30,8 +26,6 @@ public class FinancialServices {
     private FinanceRepository financeRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private HouseHoldRepository houseHoldRepository;
 
     public CashFlowItem getItem(Object objectId) {
         return financeRepository.getItem(objectId, userRepository.getCurrentUser());
@@ -66,16 +60,7 @@ public class FinancialServices {
     }
 
     private Collection<String> getMembers() {
-        User user = userRepository.getLoggedUser();
-        if (user == null) {
-            return Collections.EMPTY_LIST;
-        }
-        // if user has not set up house hold, then only he/she is member of house hold
-        if (user.getHouseHoldId() == null) {
-            return Arrays.asList(new String[]{user.getUserId()});
-        }
-        HouseHold houseHold = houseHoldRepository.findByHouseHoldId(user.getHouseHoldId());
-        return houseHold.getMembers();
+        return Arrays.asList(new String[]{userRepository.getLoggedUser().getUserId()});
     }
 
     public Collection<CashSum> getRevenue() {

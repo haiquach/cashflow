@@ -5,7 +5,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by HQ on 7/27/2016.
@@ -13,9 +15,24 @@ import java.util.*;
 @Document(collection = "users")
 public class User {
 
+    public static final User ADMIN = new User("admin", "admin", null, null, null, LocalDateTime.now(),
+            LocalDateTime.now(), null, null);
+
     public User() {
-        createdDate = new Date();
-        updatedDate = new Date();
+        new User(null, null, null, null, null, LocalDateTime.now(),
+                LocalDateTime.now(), null, null);
+    }
+    public User(String userId, String password, String firstName, String lastName, String email,
+                LocalDateTime createdDate, LocalDateTime updatedDate, Collection<String> roles, String token) {
+        this.userId = userId;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.roles = roles;
+        this.dropbox = token;
     }
 
     @Id
@@ -34,13 +51,13 @@ public class User {
     @NotEmpty
     private String email;
 
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     private Collection<String> roles;
 
-    private String houseHoldId;
+    private String dropbox;
 
     public String getUserId() {
         return userId;
@@ -56,22 +73,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+        this.updatedDate = LocalDateTime.now();
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -86,32 +96,21 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Collection<String> roles) {
-        this.roles = roles;
-    }
-
-    public Date getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
+    public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
+    public String getDropboxToken() {
+        return dropbox;
     }
 
-    public String getHouseHoldId() {
-        return houseHoldId;
-    }
-
-    public void setHouseHoldId(String houseHoldId) {
-        this.houseHoldId = houseHoldId;
+    public void setDropbox(String dropbox) {
+        this.dropbox = dropbox;
+        this.updatedDate = LocalDateTime.now();
     }
 
     public boolean isAdmin() {
@@ -152,16 +151,36 @@ public class User {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append("User [userId=" + userId );
-        result.append(", password=" + password);
-        result.append(", firstName=" + firstName);
-        result.append(", lastName=" + lastName);
-        result.append(", email=" + email);
-        result.append(", created=" + createdDate);
-        result.append(", updated=" + updatedDate);
-        result.append("]");
-        return result.toString();
+        return "User {" +
+                " userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", createdDate=" + createdDate +
+                ", updatedDate=" + updatedDate +
+                ", roles=" + roles +
+                ", dropbox=" + dropbox +
+                " }";
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public void setRoles(Collection<String> roles) {
+        this.roles = roles;
+    }
 }

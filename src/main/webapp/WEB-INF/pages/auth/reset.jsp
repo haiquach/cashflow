@@ -1,5 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-info">
         <form:form method="post" modelAttribute="resetForm" action="processPassword" class="form-horizontal">
@@ -34,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-offset-4 col-xs-8">
-                        <a href="<c:url value='/users/profile'/>" class="btn btn-default">Cancel</a>
+                        <a href="<s:url value='/users/profile'/>" class="btn btn-default">Cancel</a>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Reset</button>
                     </div>
                 </div>

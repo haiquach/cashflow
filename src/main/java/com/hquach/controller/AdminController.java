@@ -1,29 +1,20 @@
 package com.hquach.controller;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.users.FullAccount;
 import com.hquach.Utils.ExcelUtils;
 import com.hquach.Validator.FileValidator;
 import com.hquach.form.FileBucket;
 import com.hquach.form.ReportForm;
 import com.hquach.model.CashFlowItem;
-import com.hquach.model.HouseHold;
 import com.hquach.model.User;
-import com.hquach.repository.HouseHoldRepository;
 import com.hquach.repository.UserRepository;
-import com.hquach.services.EmailService;
 import com.hquach.services.FinancialServices;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
@@ -51,13 +41,7 @@ public class AdminController {
     private UserRepository userRepository;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private MessageSource messageSource;
-
-    @Autowired
-    private HouseHoldRepository houseHoldRepository;
 
     @Autowired
     private FinancialServices financialServices;
@@ -192,31 +176,7 @@ public class AdminController {
      */
     @ModelAttribute("roles")
     public String[] initializeProfiles() {
-        return new String [] {"ROLE_ADMIN", "ROLE_HOUSE_HOLD", "ROLE_BROKER"};
-    }
-
-    @RequestMapping(value = { "/houseHold"}, method = RequestMethod.GET)
-    public String houseHouse(Model model) {
-        model.addAttribute("houseHold", new HouseHold());
-        model.addAttribute("users", userRepository.findAllUsersAvailableForHouseHold());
-        model.addAttribute("houseHolds", houseHoldRepository.findAll());
-        return "houseHold";
-    }
-
-    @RequestMapping(value = { "/houseHold/add" }, method = RequestMethod.POST)
-    public String saveHouseHold(@Valid HouseHold houseHold, BindingResult result,
-                           ModelMap model) {
-        if (result.hasErrors()) {
-            return "houseHold";
-        }
-        houseHoldRepository.save(houseHold);
-        return "redirect:houseHold";
-    }
-
-    @RequestMapping(value = { "/houseHold/{houseHoldId}" }, method = RequestMethod.GET)
-    public String deleteHouseHold(@PathVariable String houseHoldId) {
-        houseHoldRepository.delete(houseHoldId);
-        return "redirect:houseHold";
+        return new String [] {"ROLE_ADMIN", "ROLE_BROKER"};
     }
 
     @InitBinder("fileBucket")

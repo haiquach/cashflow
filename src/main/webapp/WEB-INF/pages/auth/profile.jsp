@@ -1,4 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
     <div class="col-sm-12">
         <div class="col-xs-12 col-sm-8">
@@ -39,10 +41,10 @@
     </div>
     <div class="col-xs-12 divider text-center">
         <div class="col-xs-12 col-sm-4 emphasis">
-            <a href="<c:url value='/users/reset'/>" class="btn btn-success btn-block"><span class="fa fa-key"></span> Reset Password </a>
+            <a href="<s:url value='/users/reset'/>" class="btn btn-success btn-block"><span class="fa fa-key"></span> Reset Password </a>
         </div>
         <div class="col-xs-12 col-sm-4 emphasis">
-            <a href="<c:url value='/users/settings'/>" class="btn btn-info btn-block"><span class="fa fa-user"></span> Edit Profile </a>
+            <a href="<s:url value='/users/settings'/>" class="btn btn-info btn-block"><span class="fa fa-user"></span> Edit Profile </a>
         </div>
         <div class="col-xs-12 col-sm-4 emphasis">
             <div class="btn-group">
@@ -50,8 +52,7 @@
                     <span class="fa fa-gear"></span> Settings <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="<c:url value='/household/category'/>"><span class="fa fa-list"></span> Categories </a></li>
-                    <li><a href="<c:url value='/household/dropbox'/>"><span class="fa fa-dropbox fa-fw"></span> Dropbox</a></li>
+                    <li><a href="<s:url value='/users/dropbox'/>"><span class="fa fa-dropbox fa-fw"></span> Dropbox</a></li>
                 </ul>
             </div>
 

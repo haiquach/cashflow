@@ -29,9 +29,6 @@ public class FinanceRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    @Autowired
-    HouseHoldRepository houseHoldRepository;
-
     public CashFlowItem getItem(Object objectId, String userId) {
         Query query = Query.query(Criteria.where("_id").is(objectId).and("userId").is(userId));
         return mongoTemplate.findOne(query, CashFlowItem.class);
@@ -39,13 +36,6 @@ public class FinanceRepository {
 
     public void addItem(CashFlowItem item) {
         mongoTemplate.save(item);
-        if (StringUtils.isNotBlank(item.getNote())) {
-            if (item.isIncome()) {
-                houseHoldRepository.addIncomeCategory(item.getCategory(), item.getNote());
-            } else if (item.isExpense()) {
-                houseHoldRepository.addExpenseCategory(item.getCategory(), item.getNote());
-            }
-        }
     }
 
     private Collection<CashFlowItem> getItems(String type, Collection<String> members, LocalDate startDate, LocalDate endDate) {
@@ -61,7 +51,7 @@ public class FinanceRepository {
                      Collection<String> incomes, Collection<String> expenses, Collection<String> notes) {
         Criteria criteria = Criteria.where("userId").in(members)
                 .and("effective").gte(startDate).lte(endDate);
-        Collection<String> categories = new ArrayList<String>();
+        Collection<String> categories = new ArrayList();
         if (incomes != null && !incomes.isEmpty()) {
             categories.addAll(incomes);
         }

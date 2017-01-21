@@ -4,11 +4,8 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.users.FullAccount;
-import com.hquach.form.CashFlowForm;
 import com.hquach.model.Dropbox;
-import com.hquach.model.HouseHold;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 
@@ -32,7 +28,7 @@ public class DropboxRepository {
     private final static String DOT = ".";
 
     @Autowired
-    private HouseHoldRepository houseHoldRepository;
+    private UserRepository userRepository;
 
     public String upload(MultipartFile file) throws DbxException, IOException {
         String path = buildPath(file);
@@ -66,6 +62,9 @@ public class DropboxRepository {
     }
 
     public Dropbox getDropbox(String token) {
+        if (token == null) {
+            return new Dropbox();
+        }
         try {
             DbxClientV2 client = new DbxClientV2(CONFIG, token);
             FullAccount account = client.users().getCurrentAccount();
@@ -76,10 +75,6 @@ public class DropboxRepository {
     }
 
     private DbxClientV2 getDropboxClient() {
-        HouseHold houseHold = houseHoldRepository.getHouseHold();
-        if (houseHold == null || houseHold.getDropbox() == null) {
-            return null;
-        }
-        return new DbxClientV2(CONFIG, houseHold.getDropbox().getToken());
+        return new DbxClientV2(CONFIG, userRepository.getLoggedUser().getDropboxToken());
     }
 }

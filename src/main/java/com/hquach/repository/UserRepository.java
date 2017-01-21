@@ -1,9 +1,7 @@
 package com.hquach.repository;
 
-import com.hquach.model.CashFlowConstant;
-import com.hquach.model.HouseHold;
+import com.hquach.model.Dropbox;
 import com.hquach.model.User;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -30,7 +29,7 @@ public class UserRepository {
     private PasswordEncoder passwordEncoder;
 
     public User findByUserId(String userId) {
-        Query query = Query.query(Criteria.where("userId").is(userId));
+        Query query = Query.query(Criteria.where("_id").is(userId));
         return mongoTemplate.findOne(query, User.class);
     }
 
@@ -44,11 +43,11 @@ public class UserRepository {
     }
 
     public void deleteUser(String userId) {
-        mongoTemplate.remove(Query.query(Criteria.where("userId").is(userId)), User.class);
+        mongoTemplate.remove(Query.query(Criteria.where("_id").is(userId)), User.class);
     }
 
     public boolean isUserExisted(String userId) {
-        return mongoTemplate.exists(Query.query(Criteria.where("userId").is(userId)), User.class);
+        return mongoTemplate.exists(Query.query(Criteria.where("_id").is(userId)), User.class);
     }
 
     public String getCurrentUser() {
@@ -59,6 +58,9 @@ public class UserRepository {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return null;
+        }
+        if (authentication.getName().equals("admin")) {
+            return User.ADMIN;
         }
         return findByUserId(authentication.getName());
     }
@@ -78,7 +80,6 @@ public class UserRepository {
     public void resetPassword(String userId, String password) {
         User user = findByUserId(userId);
         user.setPassword(passwordEncoder.encode(password));
-        user.setUpdatedDate(new Date());
         mongoTemplate.save(user);
     }
 
@@ -87,17 +88,16 @@ public class UserRepository {
         return mongoTemplate.find(Query.query(Criteria.where("houseHoldId").is(null)), User.class);
     }
 
-    void updateHouseHold(HouseHold houseHold) {
-        Query query = Query.query(Criteria.where("userId").in(houseHold.getMembers()));
-        Update update = new Update();
-        update.set("houseHoldId", houseHold.getHouseHoldId());
-        mongoTemplate.updateMulti(query, update, User.class);
-    }
-
     void clearHouseHold(String houseHoldId) {
         Query query = Query.query(Criteria.where("houseHoldId").is(houseHoldId));
         Update update = new Update();
         update.unset("houseHoldId");
         mongoTemplate.updateMulti(query, update, User.class);
+    }
+
+    public void saveDropbox(String dropbox) {
+        User user = getLoggedUser();
+        user.setDropbox(dropbox);
+        mongoTemplate.save(user);
     }
 }
