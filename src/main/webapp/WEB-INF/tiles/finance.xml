@@ -58,4 +58,16 @@
         <put-attribute name="headerTitle" value="Dropbox" />
     </definition>
 
+    <definition name="transaction" extends="defaultTemplate">
+        <put-attribute name="title" value="Import Cash Flow Items" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/transaction.jsp" />
+        <put-attribute name="headerTitle" value="Transactions" />
+    </definition>
+
+    <definition name="statement" extends="defaultTemplate">
+        <put-attribute name="title" value="Import Cash Flow Items" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/statement.jsp" />
+        <put-attribute name="headerTitle" value="Bank Statement Import" />
+    </definition>
+
 </tiles-definitions>
