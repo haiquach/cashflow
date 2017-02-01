@@ -60,8 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/js/**", "/**/css/**", "/**/fonts/**") .permitAll()
                 .antMatchers("/", "/dashboard").authenticated()
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                //.antMatchers("/finance/**").access("hasRole('ADMIN') and hasRole('BROKER')")
-                .antMatchers("/finance/**").access("hasRole('BROKER')")
+                .antMatchers("/txn/**", "/users/**").authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("userId").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
@@ -69,7 +68,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");
     }
 
-    // http://websystique.com/springmvc/spring-mvc-4-and-spring-security-4-integration-example/
     @Bean
     public PersistentTokenBasedRememberMeServices getPersistentTokenBasedRememberMeServices() {
         PersistentTokenBasedRememberMeServices tokenBasedservice = new PersistentTokenBasedRememberMeServices(

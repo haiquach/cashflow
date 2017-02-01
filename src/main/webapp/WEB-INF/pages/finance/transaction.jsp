@@ -2,13 +2,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:forEach items="${txn}" var="snapshot">
-    <c:forEach items="${snapshot.transactions}" var="txnDate">
-        <div class="panel panel-default">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            ${snapshot.displayDate}
+        </div>
         <div class="panel-body">
-            <div class="col-md-2">${snapshot.month}/${txnDate.key}/${snapshot.year}</div>
-            <div class="col-md-10">
-                <div class="row-fluid">
-                    <c:forEach items="${txnDate.value}" var="transaction">
+            <c:forEach items="${snapshot.sortedByDateTransactions}" var="transaction">
+                <div class="col-md-2">${transaction.date}</div>
+                <div class="col-md-10">
+                    <div class="row-fluid">
                         <div class="col-sm-9">${transaction.description}</div>
                         <div class="col-sm-3">
                             <c:if test="${transaction.amount > 0}">
@@ -22,10 +24,9 @@
                                 </span>
                             </c:if>
                         </div>
-                    </c:forEach>
+                    </div>
                 </div>
-            </div>
+            </c:forEach>
         </div>
-        </div>
-    </c:forEach>
+    </div>
 </c:forEach>

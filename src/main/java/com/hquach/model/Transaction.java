@@ -11,16 +11,17 @@ import java.util.Currency;
 public class Transaction {
     private String category;
     private LocalDate date;
-    private BigDecimal amount;
+    private Double amount;
     private Currency currency;
     private String description;
     private Collection<String> tags;
     private String account;
+    private String receipt;
 
     public Transaction(){}
 
-    public Transaction(String category, LocalDate date, BigDecimal amount, Currency currency, String description,
-                       Collection<String> tags, String account) {
+    public Transaction(String category, LocalDate date, Double amount, Currency currency, String description,
+                       Collection<String> tags, String account, String receipt) {
         this.category = category;
         this.date = date;
         this.amount = amount;
@@ -28,13 +29,14 @@ public class Transaction {
         this.description = description;
         this.tags = tags;
         this.account = account;
+        this.receipt = receipt;
     }
 
     public String getCategory() {
         return category;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
@@ -56,5 +58,25 @@ public class Transaction {
 
     public String getAccount() {
         return account;
+    }
+
+    public String getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(String receipt) {
+        this.receipt = receipt;
+    }
+
+    public boolean isIncome() {
+        return amount > 0;
+    }
+
+    public boolean isExpense() {
+        return amount < 0.0;
+    }
+
+    public Double getAbsoluteAmount() {
+        return new BigDecimal(amount).abs().doubleValue();
     }
 }

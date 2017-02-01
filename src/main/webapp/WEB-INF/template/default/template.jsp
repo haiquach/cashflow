@@ -23,6 +23,8 @@
     <!-- http://plugins.krajee.com/file-input -->
     <link href="<c:url value='/resources/css/fileinput.min.css'/>" rel="stylesheet">
 
+    <link href="<c:url value='/resources/css/bootstrap-tagsinput.css'/>" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -39,8 +41,8 @@
     <script src="<c:url value='/resources/js/dataTables.bootstrap.min.js'/>"></script>
     <!-- Date Picker JavaScript -->
     <script src="<c:url value='/resources/js/bootstrap-datepicker.js'/>"></script>
-    <!-- Bootstrap3 typeahead JavaScript -->
-    <script src="<c:url value='/resources/js/bootstrap3-typeahead.min.js'/>"></script>
+    <!-- Bootstrap3 tagsinput JavaScript -->
+    <script src="<c:url value='/resources/js/bootstrap-tagsinput.min.js'/>"></script>
     <!-- Morris JavaScript -->
     <script src="<c:url value='/resources/js/raphael-min.js'/>"></script>
     <script src="<c:url value='/resources/js/morris.min.js'/>"></script>

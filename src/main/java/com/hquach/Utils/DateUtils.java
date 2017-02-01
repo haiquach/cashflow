@@ -40,4 +40,8 @@ public class DateUtils {
         Instant instant = date.toInstant();
         return instant.atZone(ZoneId.systemDefault()).toLocalDate();
     }
+
+    public static Date asDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
 }

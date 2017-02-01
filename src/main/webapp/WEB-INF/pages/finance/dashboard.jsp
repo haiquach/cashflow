@@ -17,13 +17,9 @@
                     </div>
                 </div>
             </div>
-            <a href="<c:url value='/finance/incomes'/>">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
+            <div class="panel-body">
+                <div id="incomeCharts"></div>
+            </div>
         </div>
     </div>
     <div class="col-lg-4 col-md-4">
@@ -39,13 +35,9 @@
                     </div>
                 </div>
             </div>
-            <a href="<c:url value='/finance/expenses'/>">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
+            <div class="panel-body">
+                <div id="expenseCharts"></div>
+            </div>
         </div>
     </div>
     <c:choose>
@@ -71,42 +63,6 @@
                     </div>
                 </div>
             </div>
-            <a href="<c:url value='/finance/revenue'/>">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-pie-chart fa-fw"></i> Incomes Summary Chart - <fmt:formatNumber value="${income}" type="currency"/>
-            </div>
-            <div class="panel-body">
-                <div id="incomeCharts"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-pie-chart fa-fw"></i> Expenses Summary Chart - <fmt:formatNumber value="${expense}" type="currency"/>
-            </div>
-            <div class="panel-body">
-                <div id="expenseCharts"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-pie-chart fa-fw"></i> Summary Chart - <fmt:formatNumber value="${revenue/income}" type="PERCENT"/>
-            </div>
             <div class="panel-body">
                 <div id="profitCharts"></div>
             </div>
@@ -127,71 +83,29 @@
 <script>
 
     $(document).ready(function() {
-        $.ajax({
-            type : "GET",
-            contentType : "application/json",
-            url : "<c:url value='/finance/summary'/>",
-            timeout : 100000,
-            success : function(data) {
-                console.log("SUCCESS: ", data);
-                Morris.Bar({
-                    element: 'summary',
-                    data: data,
-                    barColors: ['#00a65a', '#f56954'],
-                    xkey: 'label',
-                    ykeys: ['income', 'expense'],
-                    labels: ["Income", "Expense"]
-                }).on('click', function(i, row){
-                    console.log(i, row);
-                });
-            },
-            error : function(e) {
-                console.log("ERROR: ", e);
-            },
-            done : function(e) {
-                console.log("DONE");
-            }
+        Morris.Bar({
+            element: 'summary',
+            data: ${jSummary},
+            barColors: ['#00a65a', '#f56954'],
+            xkey: 'label',
+            ykeys: ['income', 'expense'],
+            labels: ["Income", "Expense"]
+        }).on('click', function(i, row){
+            console.log(i, row);
         });
-        $.ajax({
-            type : "GET",
-            contentType : "application/json",
-            url : "<c:url value='/finance/summary/inc'/>",
-            timeout : 100000,
-            success : function(data) {
-                console.log("SUCCESS: ", data);
-                Morris.Donut({
-                    element: 'incomeCharts',
-                    data: data,
-                    colors: ["#3c8dbc", "#f56954", "#00a65a"]
-                });
-            },
-            error : function(e) {
-                console.log("ERROR: ", e);
-            },
-            done : function(e) {
-                console.log("DONE");
-            }
+
+        Morris.Donut({
+            element: 'incomeCharts',
+            data: ${jIncome},
+            colors: ["#3c8dbc", "#f56954", "#00a65a"]
         });
-        $.ajax({
-            type : "GET",
-            contentType : "application/json",
-            url : "<c:url value='/finance/summary/exp'/>",
-            timeout : 100000,
-            success : function(data) {
-                console.log("SUCCESS: ", data);
-                Morris.Donut({
-                    element: 'expenseCharts',
-                    data: data,
-                    colors: ["#3c8dbc", "#f56954", "#00a65a"]
-                });
-            },
-            error : function(e) {
-                console.log("ERROR: ", e);
-            },
-            done : function(e) {
-                console.log("DONE");
-            }
+
+        Morris.Donut({
+            element: 'expenseCharts',
+            data: ${jExpense},
+            colors: ["#3c8dbc", "#f56954", "#00a65a"]
         });
+
         Morris.Donut({
             element: 'profitCharts',
             data: [

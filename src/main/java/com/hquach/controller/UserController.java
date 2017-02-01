@@ -35,20 +35,6 @@ public class UserController {
     @Autowired
     MessageSource messageSource;
 
-    //@Autowired
-    //AuthenticationTrustResolver authenticationTrustResolver;
-
-    private static final String ERROR_MESSAGE = "errorMessage";
-
-    /**
-     * This method returns true if users is already authenticated [logged-in], else false.
-     */
-    /*
-    private boolean isCurrentAuthenticationAnonymous() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authenticationTrustResolver.isAnonymous(authentication);
-    }*/
-
     @RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
     public String profile(Model model) {
         model.addAttribute("self", userRepository.getLoggedUser());

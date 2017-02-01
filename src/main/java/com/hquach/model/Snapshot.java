@@ -5,11 +5,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -24,23 +26,22 @@ public class Snapshot {
     private String userId;
     private int month;
     private int year;
-    private Map<Integer, Collection<Transaction>> transactions;
+    private Collection<Transaction> transactions;
 
     public Snapshot() {}
 
-    private Snapshot(String userId, int year, int month,
-                     Map<Integer, Collection<Transaction>> transactions) {
+    private Snapshot(String userId, int year, int month) {
         this.userId = userId;
         this.year = year;
         this.month = month;
-        this.transactions = new HashMap<>(transactions);
+        this.transactions = new ArrayList<>();
     }
 
-    public Snapshot(String category, LocalDate date, BigDecimal amount, Currency currency, String description,
-                    Collection<String> tags, String account) {
+    public Snapshot(String category, LocalDate date, Double amount, Currency currency, String description,
+                    Collection<String> tags, String account, String receipt) {
         this.month = date.getMonthValue();
         this.year = date.getYear();
-        addTransaction(category, date, amount, currency, description, tags, account);
+        addTransaction(new Transaction(category, date, amount, currency, description, tags, account, receipt));
     }
 
     public String getId() {
@@ -59,32 +60,30 @@ public class Snapshot {
         return userId;
     }
 
-    public Map<Integer, Collection<Transaction>> getTransactions() {
+    public Collection<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void addTransaction(String category, LocalDate date, BigDecimal amount, Currency currency,
-                               String description, Collection<String> tags, String account) {
-        if (year != date.getYear() || month != date.getMonthValue()) {
+    public Collection<Transaction> getSortedByDateTransactions() {
+        return transactions.stream().sorted((Transaction t1, Transaction t2) -> t2.getDate().compareTo(t1.getDate()))
+                .collect(Collectors.toList());
+    }
+
+    public void addTransaction(Transaction transaction) {
+        if (year != transaction.getDate().getYear() || month != transaction.getDate().getMonthValue()) {
             throw new IllegalArgumentException("Adding incorrect date to snapshot!!!");
         }
         if (transactions == null) {
-            transactions = new HashMap();
+            transactions = new ArrayList<>();
         }
-        Collection<Transaction> list = transactions.get(date.getDayOfMonth());
-        if (list == null) list = new ArrayList();
-        list.add(new Transaction(category, date, amount, currency, description, tags, account));
-        transactions.put(date.getDayOfMonth(), list);
+        transactions.add(transaction);
     }
 
-    public void addTransactions(Map<Integer, Collection<Transaction>> txns) {
-        txns.forEach((k,v) ->
-            v.forEach(item -> addTransaction(item.getCategory(), item.getDate(), item.getAmount(), item.getCurrency(),
-                    item.getDescription(), item.getTags(), item.getAccount()))
-        );
+    public static Snapshot createBlankSnapshot(int year, int month, String owner) {
+        return new Snapshot(owner, year, month);
     }
 
-    public Snapshot copySnapshot(String owner) {
-        return new Snapshot(owner, year, month, transactions);
+    public String getDisplayDate() {
+        return LocalDate.of(year, month, 1).format(DateTimeFormatter.ofPattern("MMMM yyyy"));
     }
 }

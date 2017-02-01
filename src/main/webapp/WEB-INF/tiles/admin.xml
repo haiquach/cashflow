@@ -34,16 +34,4 @@
         <put-attribute name="headerTitle" value="User Profile" />
     </definition>
 
-    <definition name="import" extends="defaultTemplate">
-        <put-attribute name="title" value="Import Cash Flow Items" />
-        <put-attribute name="body" value="/WEB-INF/pages/admin/import.jsp" />
-        <put-attribute name="headerTitle" value="Import Cash Flow Items" />
-    </definition>
-
-    <definition name="export" extends="defaultTemplate">
-        <put-attribute name="title" value="Import Cash Flow Items" />
-        <put-attribute name="body" value="/WEB-INF/pages/admin/export.jsp" />
-        <put-attribute name="headerTitle" value="Export Cash Flow Items" />
-    </definition>
-
 </tiles-definitions>

@@ -1,15 +1,8 @@
 package com.hquach.controller;
 
-import com.hquach.Utils.ExcelUtils;
-import com.hquach.Validator.FileValidator;
-import com.hquach.form.FileBucket;
-import com.hquach.form.ReportForm;
-import com.hquach.model.CashFlowItem;
 import com.hquach.model.User;
 import com.hquach.repository.UserRepository;
-import com.hquach.services.FinancialServices;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -17,15 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -42,12 +33,6 @@ public class AdminController {
 
     @Autowired
     private MessageSource messageSource;
-
-    @Autowired
-    private FinancialServices financialServices;
-
-    @Autowired
-    FileValidator fileValidator;
 
     /**
      * This method will list all existing users.
@@ -126,19 +111,9 @@ public class AdminController {
     @RequestMapping(value = { "/edit-user-{userId}" }, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
                              ModelMap model, @PathVariable String userId) {
-
         if (result.hasErrors()) {
             return "registration";
         }
-
-        /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new
-
-            String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
-            return "registration";
-        }*/
 
         userRepository.updateUser(userId, user.getFirstName(), user.getLastName(), user.getEmail(), user.getRoles());
 
@@ -177,58 +152,5 @@ public class AdminController {
     @ModelAttribute("roles")
     public String[] initializeProfiles() {
         return new String [] {"ROLE_ADMIN", "ROLE_BROKER"};
-    }
-
-    @InitBinder("fileBucket")
-    protected void initBinderFileBucket(WebDataBinder binder) {
-        binder.setValidator(fileValidator);
-    }
-
-    @RequestMapping(value = "/import", method = RequestMethod.GET)
-    public String getSingleUploadPage(ModelMap model) {
-        FileBucket fileModel = new FileBucket();
-        model.addAttribute("fileBucket", fileModel);
-        return "import";
-    }
-
-    @RequestMapping(value = "/process", method = RequestMethod.POST)
-    public String singleFileUpload(@Valid FileBucket fileBucket,
-                                   BindingResult result, ModelMap model) throws IOException {
-
-        if (result.hasErrors()) {
-            return "import";
-        }
-        MultipartFile multipartFile = fileBucket.getFile();
-
-        Collection<CashFlowItem> items = ExcelUtils.processFile(multipartFile.getInputStream());
-        for (CashFlowItem item : items) {
-            financialServices.addItem(item);
-        }
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
-    public String export(Model model) {
-        model.addAttribute("form", new ReportForm());
-        return "export";
-    }
-
-    @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public String getFile(@Valid ReportForm form, BindingResult result, Model model, HttpServletResponse response) {
-        if (result.hasErrors()) {
-            model.addAttribute("form", form);
-            return "export";
-        }
-        try {
-            String fileName = FastDateFormat.getInstance("MMddyyyyHHmmss").format(new Date()) + ".xls";
-            response.setContentType("application/excel");
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-            ExcelUtils.exportFile(response.getOutputStream(),
-                    financialServices.search(form.getStartDate(), form.getEndDate(), null, null, null));
-            response.flushBuffer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

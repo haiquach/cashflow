@@ -16,18 +16,6 @@
         <put-attribute name="headerTitle" value="Dashboard" />
     </definition>
 
-    <definition name="incomes" extends="defaultTemplate">
-        <put-attribute name="title" value="Financial Income" />
-        <put-attribute name="body" value="/WEB-INF/pages/finance/income.jsp" />
-        <put-attribute name="headerTitle" value="Income Management" />
-    </definition>
-
-    <definition name="expenses" extends="defaultTemplate">
-        <put-attribute name="title" value="Financial Expense" />
-        <put-attribute name="body" value="/WEB-INF/pages/finance/expense.jsp" />
-        <put-attribute name="headerTitle" value="Expense Management" />
-    </definition>
-
     <definition name="settings" extends="defaultTemplate">
         <put-attribute name="title" value="User Settings" />
         <put-attribute name="body" value="/WEB-INF/pages/auth/settings.jsp" />
@@ -37,19 +25,13 @@
     <definition name="revenue" extends="defaultTemplate">
         <put-attribute name="title" value="Financial Income" />
         <put-attribute name="body" value="/WEB-INF/pages/finance/revenue.jsp" />
-        <put-attribute name="headerTitle" value="Revenue Details" />
+        <put-attribute name="headerTitle" value="Profit and Loss Statement" />
     </definition>
 
     <definition name="report" extends="defaultTemplate">
         <put-attribute name="title" value="Financial Income" />
         <put-attribute name="body" value="/WEB-INF/pages/finance/report.jsp" />
         <put-attribute name="headerTitle" value="Search" />
-    </definition>
-
-    <definition name="item" extends="defaultTemplate">
-        <put-attribute name="title" value="Financial Cash Flow Item" />
-        <put-attribute name="body" value="/WEB-INF/pages/finance/item.jsp" />
-        <put-attribute name="headerTitle" value="Financial Cash Flow Item" />
     </definition>
 
     <definition name="dropbox" extends="defaultTemplate">
@@ -68,6 +50,12 @@
         <put-attribute name="title" value="Import Cash Flow Items" />
         <put-attribute name="body" value="/WEB-INF/pages/finance/statement.jsp" />
         <put-attribute name="headerTitle" value="Bank Statement Import" />
+    </definition>
+
+    <definition name="newtxn" extends="defaultTemplate">
+        <put-attribute name="title" value="New Transaction" />
+        <put-attribute name="body" value="/WEB-INF/pages/finance/newtxn.jsp" />
+        <put-attribute name="headerTitle" value="New Transaction" />
     </definition>
 
 </tiles-definitions>
