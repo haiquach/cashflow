@@ -7,7 +7,7 @@
             <h2>${self.fullName}</h2>
             <p><strong>User ID: </strong> ${self.userId} </p>
             <p><strong>Email: </strong> ${self.email} </p>
-            <p><strong>Members since: </strong> ${self.createdDate} </p>
+            <p><strong>Member Date: </strong> ${self.createdDate} </p>
             <p><strong>Roles: </strong>
                 <c:forEach items="${self.roles}" var="role">
                     <span class="tags">${role}</span>

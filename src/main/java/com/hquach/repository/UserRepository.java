@@ -83,18 +83,6 @@ public class UserRepository {
         mongoTemplate.save(user);
     }
 
-
-    public Collection<User> findAllUsersAvailableForHouseHold() {
-        return mongoTemplate.find(Query.query(Criteria.where("houseHoldId").is(null)), User.class);
-    }
-
-    void clearHouseHold(String houseHoldId) {
-        Query query = Query.query(Criteria.where("houseHoldId").is(houseHoldId));
-        Update update = new Update();
-        update.unset("houseHoldId");
-        mongoTemplate.updateMulti(query, update, User.class);
-    }
-
     public void saveDropbox(String dropbox) {
         User user = getLoggedUser();
         user.setDropbox(dropbox);

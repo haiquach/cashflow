@@ -23,8 +23,8 @@ public class User {
             LocalDateTime.now(), null, null);
 
     public User() {
-        new User(null, null, null, null, null, LocalDateTime.now(),
-                LocalDateTime.now(), null, null);
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
     public User(String userId, String password, String firstName, String lastName, String email,
                 LocalDateTime createdDate, LocalDateTime updatedDate, Collection<String> roles, String token) {
