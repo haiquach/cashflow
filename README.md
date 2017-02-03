@@ -1,4 +1,4 @@
-# This application is designed to deploy to tomcat 7
+# This application is designed to deploy to tomcat 8 - Java 8
 
 # Tomcat settings - $TOMCAT_HOME/conf/tomcat-users.xml
 <role rolename="manager-gui"/>

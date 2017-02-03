@@ -1,10 +1,14 @@
 package com.hquach.model;
 
+import org.apache.commons.codec.binary.Hex;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -182,5 +186,13 @@ public class User {
 
     public void setRoles(Collection<String> roles) {
         this.roles = roles;
+    }
+
+    public String getGravatar() throws NoSuchAlgorithmException {
+        final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.reset();
+        messageDigest.update(email.getBytes(Charset.forName("UTF8")));
+        final byte[] resultByte = messageDigest.digest();
+        return "http://gravatar.com/avatar/" + new String(Hex.encodeHex(resultByte)) + "?s=150";
     }
 }

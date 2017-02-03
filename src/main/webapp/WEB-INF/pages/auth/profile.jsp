@@ -16,7 +16,7 @@
         </div>
         <div class="col-xs-12 col-sm-4 text-center">
             <figure>
-                <img src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" alt="" class="img-circle img-responsive">
+                <img src="${self.gravatar}" alt="" class="img-circle img-responsive">
                 <figcaption class="ratings">
                     <p>
                         <a href="#">
