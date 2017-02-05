@@ -3,19 +3,24 @@
 <s:url value="/txn/processStatement" var="importProcess">
     <s:param name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </s:url>
-<s:hasBindErrors name="*">
-    <div class="erorr">
-        <form:errors path="*" cssClass="has-error"/>
-    </div>
-</s:hasBindErrors>
+
 <form:form method="POST" modelAttribute="fileBucket" action="${importProcess}"
            enctype="multipart/form-data" class="form-inline">
+    <s:hasBindErrors name="fileBucket" >
+        <div class="alert alert-danger">
+            <form:errors path="*" />
+        </div>
+    </s:hasBindErrors>
+
+    <div class="form-group">
+        <label for="name" class="col-sm-4 control-label">Name</label>
+        <div class="col-sm-8">
+            <form:select path="name" items="${dataNames}" class="form-control"/>
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-sm-12">
             <form:input type="file" path="file" class="file-loading"/>
-            <div id="errorBlock" class="help-block">
-                <form:errors path="file" class="help-inline"/>
-            </div>
         </div>
     </div>
 </form:form>

@@ -42,7 +42,9 @@ public class TransactionRepository {
     private final static String TRANSACTION_AMOUNT = TRANSACTION + ".amount";
 
     public Collection<Snapshot> getTransactions() {
-        return mongoTemplate.find(Query.query(Criteria.where("userId").is(userRepository.getCurrentUser())), Snapshot.class);
+        Query query = Query.query(Criteria.where("userId").is(userRepository.getCurrentUser()))
+                .with(new Sort(Sort.Direction.DESC, "year", "month"));
+        return mongoTemplate.find(query, Snapshot.class);
     }
 
     public String saveTransaction(Transaction transaction) {

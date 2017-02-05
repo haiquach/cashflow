@@ -1,5 +1,6 @@
 package com.hquach.controller;
 
+import com.hquach.form.MappingForm;
 import com.hquach.form.ResetForm;
 import com.hquach.model.Dropbox;
 import com.hquach.model.User;
@@ -111,5 +112,43 @@ public class UserController {
         }
         userRepository.saveDropbox(dropbox.getToken());
         return "redirect:dropbox";
+    }
+
+    @RequestMapping(value = { "/list" }, method = RequestMethod.GET)
+    public String listData(Model model) {
+        model.addAttribute("data", userRepository.getLoggedUser().getDataDefined());
+        return "list";
+    }
+
+    @RequestMapping(value = { "/data" }, method = RequestMethod.GET)
+    public String importData(Model model) {
+        model.addAttribute("data", new MappingForm());
+        return "import";
+    }
+
+    @RequestMapping(value = { "/data/remove-{key}" }, method = RequestMethod.GET)
+    public String removeData(Model model, @PathVariable String key) {
+        userRepository.removeDataMapping(key);
+        model.addAttribute("data", userRepository.getLoggedUser().getDataDefined());
+        return "list";
+    }
+
+    @RequestMapping(value = { "/data" }, method = RequestMethod.POST)
+    public String processData(@Valid @ModelAttribute("data") MappingForm form, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "import";
+        }
+
+        User user = userRepository.getLoggedUser();
+        String name = form.getName();
+        if (user.getDataDefined(name) != null) {
+            FieldError nameError =new FieldError("data", "name",
+                    "You already had the same name in your mapping configuration.");
+            result.addError(nameError);
+            return "import";
+        }
+        userRepository.addDataMapping(form.getName(), form.getCategory(), form.getDate(), form.getAmount(),
+                form.getCurrency(), form.getDescription(), form.getTags(), form.getAccount(), form.getReceipt());
+        return "redirect:list";
     }
 }

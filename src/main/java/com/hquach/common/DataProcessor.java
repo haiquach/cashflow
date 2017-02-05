@@ -15,6 +15,16 @@ import java.util.Map;
  */
 public interface DataProcessor {
 
+    public final static String DEFAULT_NAME = "___SYSTEM___";
+    public final static Integer SKIP_VALUE = 999;
+
+    /**
+     * Validate a line of data (from CSV file).
+     * @param data csv data
+     * @return error message
+     */
+    String validate(String data);
+
     /**
      * Build a line of data (from CSV file) to transaction object
      * @param data

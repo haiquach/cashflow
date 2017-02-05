@@ -1,5 +1,6 @@
 package com.hquach.repository;
 
+import com.hquach.model.DataMapping;
 import com.hquach.model.Dropbox;
 import com.hquach.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,21 +84,22 @@ public class UserRepository {
         mongoTemplate.save(user);
     }
 
-
-    public Collection<User> findAllUsersAvailableForHouseHold() {
-        return mongoTemplate.find(Query.query(Criteria.where("houseHoldId").is(null)), User.class);
-    }
-
-    void clearHouseHold(String houseHoldId) {
-        Query query = Query.query(Criteria.where("houseHoldId").is(houseHoldId));
-        Update update = new Update();
-        update.unset("houseHoldId");
-        mongoTemplate.updateMulti(query, update, User.class);
-    }
-
     public void saveDropbox(String dropbox) {
         User user = getLoggedUser();
         user.setDropbox(dropbox);
+        mongoTemplate.save(user);
+    }
+
+    public void addDataMapping(String name, Integer category, Integer date, Integer amount, Integer currency,
+                               Integer description, Integer tags, Integer account, Integer receipt) {
+        User user = getLoggedUser();
+        user.addDataDefined(name, new DataMapping(category, date, amount, currency, description, tags, account, receipt));
+        mongoTemplate.save(user);
+    }
+
+    public void removeDataMapping(String name) {
+        User user = getLoggedUser();
+        user.removeDataDefined(name);
         mongoTemplate.save(user);
     }
 }

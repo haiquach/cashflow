@@ -11,6 +11,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -62,6 +65,8 @@ public class User {
     private Collection<String> roles;
 
     private String dropbox;
+
+    private Map<String, DataMapping> dataDefined;
 
     public String getUserId() {
         return userId;
@@ -155,8 +160,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User {" +
-                " userId='" + userId + '\'' +
+        return "User{" +
+                "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -164,8 +169,9 @@ public class User {
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +
                 ", roles=" + roles +
-                ", dropbox=" + dropbox +
-                " }";
+                ", dropbox='" + dropbox + '\'' +
+                ", dataDefined=" + dataDefined +
+                '}';
     }
 
     public void setFirstName(String firstName) {
@@ -194,5 +200,31 @@ public class User {
         messageDigest.update(email.getBytes(Charset.forName("UTF8")));
         final byte[] resultByte = messageDigest.digest();
         return "http://gravatar.com/avatar/" + new String(Hex.encodeHex(resultByte)) + "?s=150";
+    }
+
+    public Collection<String> getDataDefinedNames() {
+        return dataDefined == null ? Collections.emptyList() : dataDefined.keySet();
+    }
+
+    public DataMapping getDataDefined(String key) {
+        return dataDefined == null? null : dataDefined.get(key);
+    }
+
+    public Map<String, DataMapping> getDataDefined() {
+        return dataDefined == null ? Collections.emptyMap() : Collections.unmodifiableMap(dataDefined);
+    }
+
+    public void addDataDefined(String name, DataMapping mapping) {
+        if (dataDefined == null) {
+            dataDefined = new HashMap();
+        }
+        dataDefined.put(name, mapping);
+    }
+
+    public void removeDataDefined(String name) {
+        if (dataDefined == null || !dataDefined.containsKey(name)) {
+            throw new IllegalArgumentException("There is no such " + name +" data mapping name to be removed");
+        }
+        dataDefined.remove(name);
     }
 }

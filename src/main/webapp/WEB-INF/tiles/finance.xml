@@ -28,6 +28,18 @@
         <put-attribute name="headerTitle" value="Profit and Loss Statement" />
     </definition>
 
+    <definition name="list" extends="defaultTemplate">
+        <put-attribute name="title" value="User Defined Data Process Mapping" />
+        <put-attribute name="body" value="/WEB-INF/pages/auth/data.jsp" />
+        <put-attribute name="headerTitle" value="User Defined Data Process Mapping" />
+    </definition>
+
+    <definition name="import" extends="defaultTemplate">
+        <put-attribute name="title" value="User Defined Data Process Mapping" />
+        <put-attribute name="body" value="/WEB-INF/pages/auth/import.jsp" />
+        <put-attribute name="headerTitle" value="User Defined Data Process Mapping" />
+    </definition>
+
     <definition name="report" extends="defaultTemplate">
         <put-attribute name="title" value="Financial Income" />
         <put-attribute name="body" value="/WEB-INF/pages/finance/report.jsp" />

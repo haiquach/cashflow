@@ -41,15 +41,27 @@
     </div>
     <div class="col-xs-12 divider text-center">
         <div class="col-xs-12 col-sm-4 emphasis">
-            <a href="<s:url value='/users/reset'/>" class="btn btn-success btn-block"><span class="fa fa-key"></span> Reset Password </a>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fa fa-gear"></span> Settings <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="<s:url value='/users/reset'/>"><span class="fa fa-key"></span> Change Password </a></li>
+                <li><a href="<s:url value='/users/settings'/>"><span class="fa fa-user"></span> Edit Profile </a></li>
+            </ul>
         </div>
         <div class="col-xs-12 col-sm-4 emphasis">
-            <a href="<s:url value='/users/settings'/>" class="btn btn-info btn-block"><span class="fa fa-user"></span> Edit Profile </a>
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fa fa-database"></span> Data Mapping <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="<s:url value='/users/list'/>"><span class="fa fa-list fa-fw"></span> List Mapping</a></li>
+                <li><a href="<s:url value='/users/data'/>"><span class="fa fa-plus fa-fw"></span> New Mapping</a></li>
+            </ul>
         </div>
         <div class="col-xs-12 col-sm-4 emphasis">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa fa-gear"></span> Settings <span class="caret"></span>
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa fa-cloud"></span> Cloud <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="<s:url value='/users/dropbox'/>"><span class="fa fa-dropbox fa-fw"></span> Dropbox</a></li>

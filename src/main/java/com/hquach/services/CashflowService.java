@@ -1,9 +1,12 @@
 package com.hquach.services;
 
 import com.hquach.common.DataFactory;
+import com.hquach.common.DataProcessor;
+import com.hquach.model.DataMapping;
 import com.hquach.model.Snapshot;
 import com.hquach.model.Transaction;
 import com.hquach.repository.TransactionRepository;
+import com.hquach.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +18,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class CashflowService {
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     TransactionRepository transactionRepository;
@@ -33,17 +41,23 @@ public class CashflowService {
         transactionRepository.saveTransaction(transaction);
     }
 
-    Function<String, String> importTransactions = new Function<String, String>() {
-        @Override
-        public String apply(String data) {
-            return transactionRepository.saveTransaction(DataFactory.getProcessor().readCsv(data));
-        }
-    };
+    public Collection<String> getDataProcessNames() {
+        Collection<String> names = new ArrayList();
+        names.add(DataProcessor.DEFAULT_NAME);
+        names.addAll(userRepository.getLoggedUser().getDataDefinedNames());
+        return names;
+    }
 
-    public Collection<String> readCsv(InputStream inputStream) {
+    public Collection<String> readCsv(InputStream inputStream, String name) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            return reader.lines().skip(1).map(importTransactions).filter(StringUtils::isNotEmpty)
-                    .collect(Collectors.toList());
+            return reader.lines().skip(1).map((String line) -> {
+                DataProcessor processor = DataFactory.getProcessor(userRepository.getLoggedUser(), name);
+                String error = processor.validate(line);
+                if (StringUtils.isNotEmpty(error)) {
+                    return error;
+                }
+                return transactionRepository.saveTransaction(processor.readCsv(line));
+            }).filter(StringUtils::isNotEmpty).collect(Collectors.toList());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -51,7 +65,8 @@ public class CashflowService {
 
     public void writeCsv(OutputStream outputStream, LocalDate start, LocalDate end,
                          String category, Collection<String> tags) throws IOException {
-        DataFactory.getProcessor().writeCsv(outputStream, transactionRepository.search(start, end, category, tags));
+        DataFactory.getProcessor(userRepository.getLoggedUser(), DataProcessor.DEFAULT_NAME)
+                .writeCsv(outputStream, transactionRepository.search(start, end, category, tags));
     }
 
     public Collection<String> getCategories() {

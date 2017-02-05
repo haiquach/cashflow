@@ -98,6 +98,11 @@ public class TransactionController {
         return "statement";
     }
 
+    @ModelAttribute(name = "dataNames")
+    public Collection<String> getDataNames() {
+        return cashflowService.getDataProcessNames();
+    }
+
     @RequestMapping(value = "/processStatement", method = RequestMethod.POST)
     public String importStatement(@Valid FileBucket fileBucket,
                                    BindingResult result, Model model) throws IOException {
@@ -105,11 +110,9 @@ public class TransactionController {
             return "statement";
         }
 
-        Collection<String> errors = cashflowService.readCsv(fileBucket.getFile().getInputStream());
+        Collection<String> errors = cashflowService.readCsv(fileBucket.getFile().getInputStream(), fileBucket.getName());
         if (!errors.isEmpty()) {
-            errors.forEach(error ->
-                    result.addError(new FieldError("fileBucket","*", error))
-            );
+            errors.forEach(error -> result.addError(new FieldError("fileBucket", "*", error)));
             return "statement";
         }
         return "redirect:/txn/list";
